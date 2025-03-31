@@ -1,0 +1,13 @@
+--- src/CMakeLists.txt
++++ src/CMakeLists.txt
+@@ -131,6 +131,10 @@ endif()
+ 
+ set(IMGUI_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/imgui ${CMAKE_CURRENT_SOURCE_DIR}/imgui/examples)
+ 
++target_include_directories(imgui
++	PUBLIC
++		${IMGUI_INCLUDE_DIRS}
++)
+ 
+ #install(TARGETS imgui DESTINATION ${INSTALL_ARCHIVE_DIR}) # No need to install a static lib
+ 

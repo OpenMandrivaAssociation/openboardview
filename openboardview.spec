@@ -1,19 +1,17 @@
-%global realname OpenBoardView
-%global upstream OpenBoardView
-%global gitbase  https://github.com
-
-Summary: View .brd files
+Summary: PCB schematics viewer
 Name:    openboardview
-Version: 9.0.3
-Release: %mkrel 1
+Version: 9.95.1
+Release: 1
 License: MIT
 Group:   Applications/Engineering
 Url:     https://openboardview.org
-Source0: %{gitbase}/%{upstream}/%{realname}/archive/refs/tags/%{version}.tar.gz
-Patch0:  build-system-Allow-using-stb-from-the-system.patch
+Source:  %{name}-%{version}.tar.zst
+Patch0:  no-bundled-libraries-that-we-provide-ourselves.patch
+Patch1:  fix-imgui.h-include.patch
 
 BuildRequires: git-core
 BuildRequires: python
+BuildRequires: cmake(glad)
 BuildRequires: cmake(SDL2)
 BuildRequires: pkgconfig(fontconfig)
 BuildRequires: pkgconfig(gtk+-3.0)
@@ -24,18 +22,23 @@ BuildRequires: pkgconfig(zlib)
 Provides: openboardview = %{version}-%{release}
 
 %description
-Linux SDL/ImGui edition software for viewing .brd files,
-intended as a drop-in replacement for the "Test_Link" software and "Landrex".
+A modern open-source PCB schematics viewer that supports popular formats.
 
 %prep
-%autosetup -p 1 -n %{realname}-%{version}
-
-git submodule update --init --recursive
+%autosetup -p 0
 
 %build
-%cmake
+%cmake -G Ninja \
+       -DCMAKE_BUILD_TYPE=Release
 
-%make_build
+%ninja_build
 
 %install
-%make_install -C build
+%ninja_install -C build
+
+%files
+%{_bindir}/%{name}
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/metainfo/%{name}.appdata.xml
+%{_datadir}/mime/packages/%{name}.xml
+%{_iconsdir}/hicolor/*/apps/%{name}*
