@@ -1,6 +1,6 @@
 Summary: PCB schematics viewer
 Name:    openboardview
-Version: 9.95.1
+Version: 10.0.0
 Release: 1
 License: MIT
 Group:   Applications/Engineering
